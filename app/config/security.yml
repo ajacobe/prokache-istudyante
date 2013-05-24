@@ -16,15 +16,19 @@ security:
                 users:
                     user:  { password: userpass, roles: [ 'ROLE_USER' ] }
                     admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
+<<<<<<< HEAD
 					
 		admin_user_provider:
 			id: services.admin_user_provider
+=======
+>>>>>>> b9a8876f7e0128c0f81ce04dfeadc0bfdd01ebab
 
     firewalls:
         dev:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
+<<<<<<< HEAD
 		admin_user.login:
 		    pattern: ^/admin/login$
 			security: false
@@ -46,6 +50,8 @@ security:
 				target: /admin/login
 			
 		
+=======
+>>>>>>> b9a8876f7e0128c0f81ce04dfeadc0bfdd01ebab
         login:
             pattern:  ^/demo/secured/login$
             security: false
@@ -63,6 +69,9 @@ security:
             #    realm: "Secured Demo Area"
 
     access_control:
+<<<<<<< HEAD
 		- { path: ^/admin/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
 		- { path: ^/admin, roles: [ ROLE_ADMIN, IS_AUTHENTICATED_REMEMBERED, IS_AUTHENTICATED_FULLY] }
+=======
+>>>>>>> b9a8876f7e0128c0f81ce04dfeadc0bfdd01ebab
         #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }

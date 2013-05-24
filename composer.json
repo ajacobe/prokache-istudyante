@@ -40,7 +40,10 @@
     "extra": {
         "symfony-app-dir": "app",
         "symfony-web-dir": "web",
+<<<<<<< HEAD
 		"symfony-assets-install": "symlink",
+=======
+>>>>>>> b9a8876f7e0128c0f81ce04dfeadc0bfdd01ebab
         "branch-alias": {
             "dev-master": "2.2-dev"
         }

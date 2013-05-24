@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 admin:
     resource: "@AdminBundle/Resources/config/routing.yml"
     prefix:   /
@@ -5,3 +6,8 @@ admin:
 DemoBundle:
     resource: "@DemoBundle/Resources/config/routing.yml"
     prefix: /
+=======
+AdminBundle:
+	resource: "@AdminBundle/Resources/config/routing.yml"
+	prefix: /
+>>>>>>> b9a8876f7e0128c0f81ce04dfeadc0bfdd01ebab
