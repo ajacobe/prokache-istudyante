@@ -30,6 +30,11 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
             return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_homepage')), array (  '_controller' => 'Istudyante\\AdminBundle\\Controller\\DefaultController::indexAction',));
         }
 
+        // admin_login
+        if ($pathinfo === '/admin/login') {
+            return array (  '_controller' => 'Istudyante\\AdminBundle\\Controller\\DefaultController::loginAction',  '_route' => 'admin_login',);
+        }
+
         throw 0 < count($allow) ? new MethodNotAllowedException(array_unique($allow)) : new ResourceNotFoundException();
     }
 }

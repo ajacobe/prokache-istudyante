@@ -1,3 +1,7 @@
 admin_homepage:
     pattern:  /hello/{name}
     defaults: { _controller: AdminBundle:Default:index }
+    
+admin_login:
+    pattern:  /admin/login
+    defaults: { _controller: AdminBundle:Default:login }
