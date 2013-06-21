@@ -2,11 +2,9 @@ parameters:
     database_driver:   pdo_mysql
     database_host:     127.0.0.1
     database_port:     ~
-<<<<<<< HEAD
     database_name:     istudyante_dev
-=======
     database_name:     symfony
->>>>>>> b9a8876f7e0128c0f81ce04dfeadc0bfdd01ebab
+
     database_user:     root
     database_password: ~
 
