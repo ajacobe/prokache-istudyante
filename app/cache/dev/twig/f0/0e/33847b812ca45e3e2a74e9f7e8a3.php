@@ -7,33 +7,54 @@ class __TwigTemplate_f00e33847b812ca45e3e2a74e9f7e8a3 extends Twig_Template
     {
         parent::__construct($env);
 
-        $this->parent = false;
+        $this->parent = $this->env->loadTemplate("::base.html.twig");
 
         $this->blocks = array(
             'body' => array($this, 'block_body'),
         );
     }
 
-    protected function doDisplay(array $context, array $blocks = array())
+    protected function doGetParent(array $context)
     {
-        // line 1
-        $this->displayBlock('body', $context, $blocks);
+        return "::base.html.twig";
     }
 
+    protected function doDisplay(array $context, array $blocks = array())
+    {
+        $this->parent->display($context, array_merge($this->blocks, $blocks));
+    }
+
+    // line 2
     public function block_body($context, array $blocks = array())
     {
-        // line 2
+        // line 3
         echo " <header>
-        <h1>Health Care Abroad Administrator Login Page</h1>
+        <h1>Istudyante Login Page</h1>
 </header>
 
 <form action=\"";
-        // line 6
+        // line 7
         echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("admin_login"), "html", null, true);
         echo "\" method=\"POST\" class=\"user\">
-    aklajsdklasd
+    <div class=\"control-group\">
+        <label class=\"control-label\" for=\"inputEmail\">Email</label>
+        <div class=\"controls\">
+        <input id=\"inputEmail\" class=\"input-large\" type=\"text\" value=\"\" name=\"_username\">
+    </div>
+    </div>
+    <div class=\"control-group\">
+        <label class=\"control-label\" for=\"inputPassword\">Password</label>
+        <div class=\"controls\">
+        <input id=\"inputPassword\" class=\"input-large\" type=\"password\" name=\"_password\">
+        </div>
+    </div>
+    <div class=\"controls\">
+        <input class=\"btn btn-primary\" type=\"submit\" value=\"Login\" name=\"submit\">
+        </div>
+        <div class=\"controls\">
+        <a href=\"\">Forgot Password?</a>
+    </div>
 
-    <input type=\"submit\" value=\"Submit\" name=\"login\"/>
 </form>
 ";
     }
@@ -43,8 +64,13 @@ class __TwigTemplate_f00e33847b812ca45e3e2a74e9f7e8a3 extends Twig_Template
         return "AdminBundle:AdminUser:login.html.twig";
     }
 
+    public function isTraitable()
+    {
+        return false;
+    }
+
     public function getDebugInfo()
     {
-        return array (  32 => 6,  26 => 2,  20 => 1,);
+        return array (  37 => 7,  31 => 3,  28 => 2,);
     }
 }
