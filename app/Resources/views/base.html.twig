@@ -8,14 +8,15 @@
             'js/bootstrap.min.js'
             output='js/compiled-admin.js'
         %}
-
-            <script src="{{ asset_url }}"></script>
+<script src="http://istudyante.local:8888/app_dev.php/js/compiled-admin.js"></script>
         {% endjavascripts %}
             {% stylesheets 
                 'css/bootstrap.min.css'
                 'css/bootstrap-responsive.min.css'
+                output='css/compiled-admin.css'
             %}
             {% endstylesheets %}
+            <link href="http://istudyante.local:8888/app_dev.php/css/compiled-admin.css" rel="stylesheet"/>
             
     </head>
     {% block body %}{% endblock %}
