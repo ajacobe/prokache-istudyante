@@ -22,11 +22,20 @@ security:
                 users:
                     developer: { password: 123456, roles: 'ROLE_DEVELOPER' }
                     test: { password:123456, roles: 'ROLE_ADMIN' }
+                    
+        admin_user_provider:
+            id: services.admin_user_provider
         
     firewalls:
-        dev:
+        main:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false
+
+        utilities_secured_area:
+            pattern: ^/secured-utilities
+            access_denied_url: /helper/access-denied
+            http_basic:
+                realm: "Secured Developers Area"
 
         admin_user.login:
             pattern: ^/admin/login$

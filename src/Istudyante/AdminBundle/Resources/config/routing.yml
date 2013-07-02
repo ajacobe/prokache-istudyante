@@ -10,3 +10,7 @@ admin_login:
 
 admin_login_check:
     pattern:   /admin/login-check
+    
+admin_dashboard:
+    pattern:   /admin/dashboard
+    defaults: { _controller: AdminBundle:Default:index }

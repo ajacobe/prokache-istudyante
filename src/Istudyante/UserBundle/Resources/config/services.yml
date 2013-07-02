@@ -1,10 +1,10 @@
 parameters:
-    services.user_class: HealthCareAbroad\UserBundle\Services\UserService
-    services.admin_user_class: HealthCareAbroad\UserBundle\Services\AdminUserService
-    services.twig_user_class: HealthCareAbroad\UserBundle\Services\TwigUserService
+    services.user_class: Istudyante\UserBundle\Services\UserService
+    services.admin_user_class: Istudyante\UserBundle\Services\AdminUserService
+    services.twig_user_class: Istudyante\UserBundle\Services\TwigUserService
 
-    services.user_provider_class: HealthCareAbroad\UserBundle\Services\ChromediaAccountsUserProvider
-    services.admin_user_provider_class: HealthCareAbroad\UserBundle\Services\AdminUserProvider
+    services.user_provider_class: Istudyante\UserBundle\Services\ChromediaAccountsUserProvider
+    services.admin_user_provider_class: Istudyante\UserBundle\Services\AdminUserProvider
     
 services:
     services.user:
