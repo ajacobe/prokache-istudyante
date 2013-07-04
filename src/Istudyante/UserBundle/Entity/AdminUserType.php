@@ -5,7 +5,7 @@ namespace Istudyante\UserBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Istudyante\UserBundle\Entity\AdminUserType
+ * AdminUserType
  */
 class AdminUserType
 {
@@ -25,30 +25,37 @@ class AdminUserType
     const STATUS_INACTIVE = 4;
     
     /**
-     * @var integer $id
+     * @var integer
      */
     private $id;
 
     /**
-     * @var string $name
+     * @var string
      */
     private $name;
 
     /**
-     * @var boolean $status
+     * @var integer
      */
     private $status;
-    
+
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var \Doctrine\Common\Collections\Collection
      */
-    private $adminUserRoles;
     private $adminUsers;
 
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $adminUserRoles;
+
+    /**
+     * Constructor
+     */
     public function __construct()
     {
-        $this->adminUserRoles = new \Doctrine\Common\Collections\ArrayCollection();
         $this->adminUsers = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->adminUserRoles = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
@@ -70,6 +77,7 @@ class AdminUserType
     public function setName($name)
     {
         $this->name = $name;
+    
         return $this;
     }
 
@@ -86,72 +94,76 @@ class AdminUserType
     /**
      * Set status
      *
-     * @param boolean $status
+     * @param integer $status
      * @return AdminUserType
      */
     public function setStatus($status)
     {
         $this->status = $status;
+    
         return $this;
     }
 
     /**
      * Get status
      *
-     * @return boolean 
+     * @return integer 
      */
     public function getStatus()
     {
         return $this->status;
     }
-    
+
     /**
      * Add adminUsers
      *
-     * @param Istudyante\UserBundle\Entity\AdminUser $adminUser
-     * @return AdminUser
+     * @param \Istudyante\UserBundle\Entity\AdminUser $adminUsers
+     * @return AdminUserType
      */
-    public function addAdminUsers(\Istudyante\UserBundle\Entity\AdminUser $adminUsers)
+    public function addAdminUser(\Istudyante\UserBundle\Entity\AdminUser $adminUsers)
     {
         $this->adminUsers[] = $adminUsers;
+    
         return $this;
     }
-    
+
     /**
      * Remove adminUsers
      *
-     * @param Istudyante\HelperBundle\Entity\AdminUser $adminUser
+     * @param \Istudyante\UserBundle\Entity\AdminUser $adminUsers
      */
-    public function removeCities(\Istudyante\UserBundle\Entity\AdminUser $adminUsers)
+    public function removeAdminUser(\Istudyante\UserBundle\Entity\AdminUser $adminUsers)
     {
         $this->adminUsers->removeElement($adminUsers);
     }
-    
+
     /**
      * Get adminUsers
      *
-     * @return Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection 
      */
     public function getAdminUsers()
     {
         return $this->adminUsers;
     }
+
     /**
      * Add adminUserRoles
      *
-     * @param Istudyante\UserBundle\Entity\AdminUserRole $adminUserRoles
+     * @param \Istudyante\UserBundle\Entity\AdminUserRole $adminUserRoles
      * @return AdminUserType
      */
     public function addAdminUserRole(\Istudyante\UserBundle\Entity\AdminUserRole $adminUserRoles)
     {
         $this->adminUserRoles[] = $adminUserRoles;
+    
         return $this;
     }
 
     /**
      * Remove adminUserRoles
      *
-     * @param <variableType$adminUserRoles
+     * @param \Istudyante\UserBundle\Entity\AdminUserRole $adminUserRoles
      */
     public function removeAdminUserRole(\Istudyante\UserBundle\Entity\AdminUserRole $adminUserRoles)
     {
@@ -161,7 +173,7 @@ class AdminUserType
     /**
      * Get adminUserRoles
      *
-     * @return Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection 
      */
     public function getAdminUserRoles()
     {

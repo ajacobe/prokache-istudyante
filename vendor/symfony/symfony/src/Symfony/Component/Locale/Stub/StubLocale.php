@@ -430,7 +430,6 @@ class StubLocale
      * @see    http://www.php.net/manual/en/locale.lookup.php
      *
      * @throws \RuntimeException       When the intl extension is not loaded
-     * @throws MethodNotImplementedException
      */
     public static function lookup(array $langtag, $locale, $canonicalize = false, $default = null)
     {

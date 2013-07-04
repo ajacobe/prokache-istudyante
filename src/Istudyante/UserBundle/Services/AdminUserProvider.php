@@ -15,7 +15,7 @@ class AdminUserProvider extends ChromediaAccountsUserProvider
     public function getApplicationUser(array $accountData)
     {
         $user = $this->userService->doctrine->getRepository('UserBundle:AdminUser')->findActiveUserById($accountData['id']);
-
+        
         if ($user) {
             // populate account data to SiteUser
             $user = $this->userService->hydrateAccountData($user, $accountData);

@@ -26,10 +26,6 @@ class ModelChoiceListTest extends Propel1TestCase
         if (!class_exists('Symfony\Component\Form\Form')) {
             $this->markTestSkipped('The "Form" component is not available');
         }
-
-        if (!class_exists('Symfony\Component\PropertyAccess\PropertyAccessor')) {
-            $this->markTestSkipped('The "PropertyAccessor" component is not available');
-        }
     }
 
     public function testEmptyChoicesReturnsEmpty()

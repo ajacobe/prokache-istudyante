@@ -166,8 +166,6 @@ class FunctionNode implements NodeInterface
      * @param XPathExpr $expr
      *
      * @return XPathExpr
-     *
-     * @throws ParseException
      */
     protected function _xpath_nth_of_type($xpath, $expr)
     {

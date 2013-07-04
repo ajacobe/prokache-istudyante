@@ -147,8 +147,6 @@ class MutableAclProvider extends AclProvider implements MutableAclProviderInterf
      * @param string $propertyName
      * @param mixed  $oldValue
      * @param mixed  $newValue
-     *
-     * @throws \InvalidArgumentException
      */
     public function propertyChanged($sender, $propertyName, $oldValue, $newValue)
     {

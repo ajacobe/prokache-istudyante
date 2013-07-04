@@ -23,9 +23,6 @@ use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
  */
 class ServiceReferenceGraph
 {
-    /**
-     * @var ServiceReferenceGraphNode[]
-     */
     private $nodes;
 
     /**
@@ -69,7 +66,7 @@ class ServiceReferenceGraph
     /**
      * Returns all nodes.
      *
-     * @return ServiceReferenceGraphNode[] An array of all ServiceReferenceGraphNode objects
+     * @return array An array of all ServiceReferenceGraphNode objects
      */
     public function getNodes()
     {

@@ -51,12 +51,18 @@ class FormValidator extends ConstraintValidator
 
         if ($form->isSynchronized()) {
             // Validate the form data only if transformation succeeded
+            $path = $this->context->getPropertyPath();
+            $graphWalker = $this->context->getGraphWalker();
             $groups = self::getValidationGroups($form);
+
+            if (!empty($path)) {
+                $path .= '.';
+            }
 
             // Validate the data against its own constraints
             if (self::allowDataWalking($form)) {
                 foreach ($groups as $group) {
-                    $this->context->validate($form->getData(), 'data', $group, true);
+                    $graphWalker->walkReference($form->getData(), $group, $path . 'data', true);
                 }
             }
 
@@ -66,7 +72,7 @@ class FormValidator extends ConstraintValidator
             foreach ($constraints as $constraint) {
                 foreach ($groups as $group) {
                     if (in_array($group, $constraint->groups)) {
-                        $this->context->validateValue($form->getData(), $constraint, 'data', $group);
+                        $graphWalker->walkConstraint($constraint, $form->getData(), $group, $path . 'data');
 
                         // Prevent duplicate validation
                         continue 2;

@@ -27,7 +27,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
  */
 interface AfterInvocationProviderInterface
 {
-    public function decide(TokenInterface $token, $secureObject, array $attributes, $returnedObject);
-    public function supportsAttribute($attribute);
-    public function supportsClass($className);
+    function decide(TokenInterface $token, $secureObject, array $attributes, $returnedObject);
+    function supportsAttribute($attribute);
+    function supportsClass($className);
 }

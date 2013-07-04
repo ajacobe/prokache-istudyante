@@ -26,7 +26,7 @@ class ResolveParameterPlaceHoldersPass implements CompilerPassInterface
      *
      * @param ContainerBuilder $container
      *
-     * @throws ParameterNotFoundException
+     * @throws ParameterNotFoundException When an invalid parameter is referenced
      */
     public function process(ContainerBuilder $container)
     {

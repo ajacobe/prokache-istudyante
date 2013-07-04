@@ -233,7 +233,7 @@ class Response
             $headers->remove('Content-Length');
         }
 
-        if ($request->isMethod('HEAD')) {
+        if ('HEAD' === $request->getMethod()) {
             // cf. RFC2616 14.13
             $length = $headers->get('Content-Length');
             $this->setContent(null);
@@ -258,7 +258,7 @@ class Response
          * @link http://support.microsoft.com/kb/323308
          */
         if (false !== stripos($this->headers->get('Content-Disposition'), 'attachment') && preg_match('/MSIE (.*?);/i', $request->server->get('HTTP_USER_AGENT'), $match) == 1 && true === $request->isSecure()) {
-            if (intval(preg_replace("/(MSIE )(.*?);/", "$2", $match[0])) < 9) {
+            if(intval(preg_replace("/(MSIE )(.*?);/", "$2", $match[0])) < 9) {
                 $this->headers->remove('Cache-Control');
             }
         }
@@ -282,7 +282,7 @@ class Response
         header(sprintf('HTTP/%s %s %s', $this->version, $this->statusCode, $this->statusText));
 
         // headers
-        foreach ($this->headers->allPreserveCase() as $name => $values) {
+        foreach ($this->headers->all() as $name => $values) {
             foreach ($values as $value) {
                 header($name.': '.$value, false);
             }
@@ -347,8 +347,6 @@ class Response
      * @param mixed $content
      *
      * @return Response
-     *
-     * @throws \UnexpectedValueException
      *
      * @api
      */
@@ -896,8 +894,6 @@ class Response
      *
      * @return Response
      *
-     * @throws \InvalidArgumentException
-     *
      * @api
      */
     public function setCache(array $options)
@@ -1131,7 +1127,7 @@ class Response
     }
 
     /**
-     * Is the response forbidden?
+     * Is the reponse forbidden?
      *
      * @return Boolean
      *

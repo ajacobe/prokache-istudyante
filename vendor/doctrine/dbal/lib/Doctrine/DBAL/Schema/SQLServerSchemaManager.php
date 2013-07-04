@@ -40,7 +40,6 @@ class SQLServerSchemaManager extends AbstractSchemaManager
     protected function _getPortableTableColumnDefinition($tableColumn)
     {
         $dbType = strtolower($tableColumn['TYPE_NAME']);
-        $dbType = strtok($dbType, '(), ');
 
         $autoincrement = false;
         if (stripos($dbType, 'identity')) {

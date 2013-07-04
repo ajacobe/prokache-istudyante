@@ -4,6 +4,7 @@ namespace JMS\SecurityExtraBundle\Security\Acl\Voter;
 
 use Symfony\Component\Security\Acl\Voter\FieldVote;
 use Symfony\Component\HttpKernel\Log\LoggerInterface;
+use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Exception\NoAceFoundException;
 use Symfony\Component\Security\Acl\Exception\AclNotFoundException;
 use Symfony\Component\Security\Acl\Model\AclProviderInterface;
@@ -56,7 +57,7 @@ class AclVoter implements VoterInterface
                 }
 
                 return $this->allowIfObjectIdentityUnavailable ? self::ACCESS_GRANTED : self::ACCESS_ABSTAIN;
-            } elseif ($object instanceof FieldVote) {
+            } else if ($object instanceof FieldVote) {
                 $field = $object->getField();
                 $object = $object->getDomainObject();
             } else {
@@ -65,7 +66,7 @@ class AclVoter implements VoterInterface
 
             if ($object instanceof ObjectIdentityInterface) {
                 $oid = $object;
-            } elseif (null === $oid = $this->objectIdentityRetrievalStrategy->getObjectIdentity($object)) {
+            } else if (null === $oid = $this->objectIdentityRetrievalStrategy->getObjectIdentity($object)) {
                 if (null !== $this->logger) {
                     $this->logger->debug(sprintf('Object identity unavailable. Voting to %s', $this->allowIfObjectIdentityUnavailable? 'grant access' : 'abstain'));
                 }
@@ -88,7 +89,7 @@ class AclVoter implements VoterInterface
                     }
 
                     return self::ACCESS_GRANTED;
-                } elseif (null !== $field && $acl->isFieldGranted($field, $masks, $sids, false)) {
+                } else if (null !== $field && $acl->isFieldGranted($field, $masks, $sids, false)) {
                     if (null !== $this->logger) {
                         $this->logger->debug('ACL found, permission granted. Voting to grant access');
                     }

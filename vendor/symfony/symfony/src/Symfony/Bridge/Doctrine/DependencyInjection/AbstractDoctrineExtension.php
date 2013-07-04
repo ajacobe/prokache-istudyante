@@ -42,8 +42,6 @@ abstract class AbstractDoctrineExtension extends Extension
     /**
      * @param array            $objectManager A configured object manager.
      * @param ContainerBuilder $container     A ContainerBuilder instance
-     *
-     * @throws \InvalidArgumentException
      */
     protected function loadMappingInformation(array $objectManager, ContainerBuilder $container)
     {
@@ -121,8 +119,6 @@ abstract class AbstractDoctrineExtension extends Extension
      *
      * @param array  $mappingConfig
      * @param string $mappingName
-     *
-     * @throws \InvalidArgumentException
      */
     protected function setMappingDriverConfig(array $mappingConfig, $mappingName)
     {
@@ -232,8 +228,6 @@ abstract class AbstractDoctrineExtension extends Extension
      *
      * @param array  $mappingConfig
      * @param string $objectManagerName
-     *
-     * @throws \InvalidArgumentException
      */
     protected function assertValidMappingConfiguration(array $mappingConfig, $objectManagerName)
     {
@@ -375,7 +369,6 @@ abstract class AbstractDoctrineExtension extends Extension
      * @example $name is 'entity_manager' then the result would be 'doctrine.orm.entity_manager'
      *
      * @param string $name
-     *
      * @return string
      */
     abstract protected function getObjectManagerElementName($name);

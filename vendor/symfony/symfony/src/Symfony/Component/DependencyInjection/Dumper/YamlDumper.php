@@ -120,7 +120,7 @@ class YamlDumper extends Dumper
 
         if ($callable = $definition->getConfigurator()) {
             if (is_array($callable)) {
-                if ($callable[0] instanceof Reference) {
+                if (is_object($callable[0]) && $callable[0] instanceof Reference) {
                     $callable = array($this->getServiceCall((string) $callable[0], $callable[0]), $callable[1]);
                 } else {
                     $callable = array($callable[0], $callable[1]);
@@ -207,9 +207,9 @@ class YamlDumper extends Dumper
             }
 
             return $code;
-        } elseif ($value instanceof Reference) {
+        } elseif (is_object($value) && $value instanceof Reference) {
             return $this->getServiceCall((string) $value, $value);
-        } elseif ($value instanceof Parameter) {
+        } elseif (is_object($value) && $value instanceof Parameter) {
             return $this->getParameterCall((string) $value);
         } elseif (is_object($value) || is_resource($value)) {
             throw new RuntimeException('Unable to dump a service container if a parameter is an object or a resource.');
@@ -260,7 +260,7 @@ class YamlDumper extends Dumper
         foreach ($parameters as $key => $value) {
             if (is_array($value)) {
                 $value = $this->prepareParameters($value, $escape);
-            } elseif ($value instanceof Reference || is_string($value) && 0 === strpos($value, '@')) {
+            } elseif ($value instanceof Reference) {
                 $value = '@'.$value;
             }
 

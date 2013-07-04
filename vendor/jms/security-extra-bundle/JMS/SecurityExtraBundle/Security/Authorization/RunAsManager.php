@@ -45,7 +45,8 @@ class RunAsManager implements RunAsManagerInterface
     public function buildRunAs(TokenInterface $token, $secureObject, array $attributes)
     {
         $roles = array();
-        foreach ($attributes as $attribute) {
+        foreach ($attributes as $attribute)
+        {
             if ($this->supportsAttribute($attribute)) {
                 $roles[] = new Role($attribute);
             }

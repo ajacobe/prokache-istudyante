@@ -5,7 +5,7 @@ namespace Istudyante\UserBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Istudyante\UserBundle\Entity\AdminUserRole
+ * AdminUserRole
  */
 class AdminUserRole
 {
@@ -23,32 +23,34 @@ class AdminUserRole
      * Inactive user roles and cannot be assigned to a user type
      */
     const STATUS_INACTIVE = 4;
-    
     /**
-     * @var integer $id
+     * @var integer
      */
     private $id;
 
     /**
-     * @var string $name
+     * @var string
      */
     private $name;
 
     /**
-     * @var integer $status
+     * @var string
      */
-    private $status;
-    
-    /**
-     * @var unknown_type
-     */
-    private $bitMask;
+    private $label;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var integer
+     */
+    private $status;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
      */
     private $adminUserTypes;
 
+    /**
+     * Constructor
+     */
     public function __construct()
     {
         $this->adminUserTypes = new \Doctrine\Common\Collections\ArrayCollection();
@@ -73,6 +75,7 @@ class AdminUserRole
     public function setName($name)
     {
         $this->name = $name;
+    
         return $this;
     }
 
@@ -85,87 +88,6 @@ class AdminUserRole
     {
         return $this->name;
     }
-    
-    /**
-     * Set bitMask
-     * 
-     * @param integer $bitMask
-     * @return AdminUserRole
-     */
-    public function setBitMask($bitMask)
-    {
-        $this->bitMask = $bitMask;
-        return $this;
-    }
-    
-    /**
-     * Get bitMask
-     * 
-     * @return integer
-     */
-    public function getBitMask()
-    {
-        return $this->bitMask;
-    }
-
-    /**
-     * Set status
-     *
-     * @param boolean $status
-     * @return AdminUserRole
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-        return $this;
-    }
-
-    /**
-     * Get status
-     *
-     * @return boolean 
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
-
-    /**
-     * Add adminUserTypes
-     *
-     * @param Istudyante\UserBundle\Entity\AdminUserType $adminUserTypes
-     * @return AdminUserRole
-     */
-    public function addAdminUserType(\Istudyante\UserBundle\Entity\AdminUserType $adminUserTypes)
-    {
-        $this->adminUserTypes[] = $adminUserTypes;
-        return $this;
-    }
-
-    /**
-     * Remove adminUserTypes
-     *
-     * @param <variableType$adminUserTypes
-     */
-    public function removeAdminUserType(\Istudyante\UserBundle\Entity\AdminUserType $adminUserTypes)
-    {
-        $this->adminUserTypes->removeElement($adminUserTypes);
-    }
-
-    /**
-     * Get adminUserTypes
-     *
-     * @return Doctrine\Common\Collections\Collection 
-     */
-    public function getAdminUserTypes()
-    {
-        return $this->adminUserTypes;
-    }
-    /**
-     * @var string $label
-     */
-    private $label;
-
 
     /**
      * Set label
@@ -176,6 +98,7 @@ class AdminUserRole
     public function setLabel($label)
     {
         $this->label = $label;
+    
         return $this;
     }
 
@@ -187,5 +110,61 @@ class AdminUserRole
     public function getLabel()
     {
         return $this->label;
+    }
+
+    /**
+     * Set status
+     *
+     * @param integer $status
+     * @return AdminUserRole
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return integer 
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * Add adminUserTypes
+     *
+     * @param \Istudyante\UserBundle\Entity\AdminUserType $adminUserTypes
+     * @return AdminUserRole
+     */
+    public function addAdminUserType(\Istudyante\UserBundle\Entity\AdminUserType $adminUserTypes)
+    {
+        $this->adminUserTypes[] = $adminUserTypes;
+    
+        return $this;
+    }
+
+    /**
+     * Remove adminUserTypes
+     *
+     * @param \Istudyante\UserBundle\Entity\AdminUserType $adminUserTypes
+     */
+    public function removeAdminUserType(\Istudyante\UserBundle\Entity\AdminUserType $adminUserTypes)
+    {
+        $this->adminUserTypes->removeElement($adminUserTypes);
+    }
+
+    /**
+     * Get adminUserTypes
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAdminUserTypes()
+    {
+        return $this->adminUserTypes;
     }
 }

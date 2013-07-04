@@ -5,19 +5,48 @@ namespace Istudyante\UserBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Istudyante\UserBundle\Entity\AdminUser
+ * AdminUser
  */
-class AdminUser extends SiteUser
+class AdminUser
 {
     /**
-     * @var integer $status
+     * @var integer
+     */
+    private $accountId;
+
+    /**
+     * @var boolean
      */
     private $status;
 
     /**
-     * @var Istudyante\UserBundle\Entity\AdminUserType
+     * @var \Istudyante\UserBundle\Entity\AdminUserType
      */
     private $adminUserType;
+
+
+    /**
+     * Set accountId
+     *
+     * @param integer $accountId
+     * @return AdminUser
+     */
+    public function setAccountId($accountId)
+    {
+        $this->accountId = $accountId;
+    
+        return $this;
+    }
+
+    /**
+     * Get accountId
+     *
+     * @return integer 
+     */
+    public function getAccountId()
+    {
+        return $this->accountId;
+    }
 
     /**
      * Set status
@@ -28,6 +57,7 @@ class AdminUser extends SiteUser
     public function setStatus($status)
     {
         $this->status = $status;
+    
         return $this;
     }
 
@@ -44,19 +74,20 @@ class AdminUser extends SiteUser
     /**
      * Set adminUserType
      *
-     * @param Istudyante\UserBundle\Entity\AdminUserType $adminUserType
+     * @param \Istudyante\UserBundle\Entity\AdminUserType $adminUserType
      * @return AdminUser
      */
     public function setAdminUserType(\Istudyante\UserBundle\Entity\AdminUserType $adminUserType = null)
     {
         $this->adminUserType = $adminUserType;
+    
         return $this;
     }
 
     /**
      * Get adminUserType
      *
-     * @return Istudyante\UserBundle\Entity\AdminUserType 
+     * @return \Istudyante\UserBundle\Entity\AdminUserType 
      */
     public function getAdminUserType()
     {

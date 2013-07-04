@@ -49,7 +49,7 @@ class RegexValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Symfony\Component\Validator\Exception\UnexpectedTypeException
+     * @expectedException Symfony\Component\Validator\Exception\UnexpectedTypeException
      */
     public function testExpectsStringCompatibleType()
     {
@@ -151,13 +151,13 @@ class RegexValidatorTest extends \PHPUnit_Framework_TestCase
         ));
         $this->assertNull($constraint->getHtmlPattern());
 
-        // Automatically converted
+        // Automaticaly converted
         $constraint = new Regex(array(
             'pattern' => '/^[a-z]+$/',
         ));
         $this->assertEquals('[a-z]+', $constraint->getHtmlPattern());
 
-        // Automatically converted, adds .*
+        // Automaticaly converted, adds .*
         $constraint = new Regex(array(
             'pattern' => '/[a-z]+/',
         ));

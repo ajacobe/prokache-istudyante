@@ -27,7 +27,6 @@ use Symfony\Component\Security\Acl\Model\SecurityIdentityRetrievalStrategyInterf
 use Symfony\Component\Security\Acl\Model\ObjectIdentityRetrievalStrategyInterface;
 use Symfony\Component\HttpKernel\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Acl\Voter\FieldVote;
 
 class PermissionEvaluator
 {
@@ -42,8 +41,8 @@ class PermissionEvaluator
         ObjectIdentityRetrievalStrategyInterface $oidRetrievalStrategy,
         SecurityIdentityRetrievalStrategyInterface $sidRetrievalStrategy,
         PermissionMapInterface $permissionMap,
-        LoggerInterface $logger = null,
-        $allowIfObjectIdentityUnavailable = true)
+        $allowIfObjectIdentityUnavailable = true,
+        LoggerInterface $logger = null)
     {
         $this->aclProvider = $aclProvider;
         $this->oidRetrievalStrategy = $oidRetrievalStrategy;
@@ -65,7 +64,7 @@ class PermissionEvaluator
             }
 
             return $this->allowIfObjectIdentityUnavailable ? true : false;
-        } elseif ($object instanceof FieldVote) {
+        } else if ($object instanceof FieldVote) {
             $field = $object->getField();
             $object = $object->getDomainObject();
         } else {
@@ -74,7 +73,7 @@ class PermissionEvaluator
 
         if ($object instanceof ObjectIdentityInterface) {
             $oid = $object;
-        } elseif (null === $oid = $this->oidRetrievalStrategy->getObjectIdentity($object)) {
+        } else if (null === $oid = $this->oidRetrievalStrategy->getObjectIdentity($object)) {
             if (null !== $this->logger) {
                 $this->logger->debug(sprintf('Object identity unavailable. Voting to %s', $this->allowIfObjectIdentityUnavailable? 'grant access' : 'abstain'));
             }
@@ -93,7 +92,7 @@ class PermissionEvaluator
                 }
 
                 return true;
-            } elseif (null !== $field && $acl->isFieldGranted($field, $masks, $sids, false)) {
+            } else if (null !== $field && $acl->isFieldGranted($field, $masks, $sids, false)) {
                 if (null !== $this->logger) {
                     $this->logger->debug('ACL found, permission granted. Voting to grant access');
                 }

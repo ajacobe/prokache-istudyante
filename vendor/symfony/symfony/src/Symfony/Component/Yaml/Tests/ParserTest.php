@@ -113,6 +113,7 @@ EOF;
 foo: |-
     one
     two
+
 bar: |-
     one
     two
@@ -122,24 +123,7 @@ EOF;
             'foo' => "one\ntwo",
             'bar' => "one\ntwo",
         );
-        $tests['Literal block chomping strip with single trailing newline'] = array($expected, $yaml);
-
-        $yaml = <<<'EOF'
-foo: |-
-    one
-    two
-
-bar: |-
-    one
-    two
-
-
-EOF;
-        $expected = array(
-            'foo' => "one\ntwo",
-            'bar' => "one\ntwo",
-        );
-        $tests['Literal block chomping strip with multiple trailing newlines'] = array($expected, $yaml);
+        $tests['Literal block chomping strip with trailing newline'] = array($expected, $yaml);
 
         $yaml = <<<'EOF'
 foo: |-
@@ -159,6 +143,7 @@ EOF;
 foo: |
     one
     two
+
 bar: |
     one
     two
@@ -168,24 +153,7 @@ EOF;
             'foo' => "one\ntwo\n",
             'bar' => "one\ntwo\n",
         );
-        $tests['Literal block chomping clip with single trailing newline'] = array($expected, $yaml);
-
-        $yaml = <<<'EOF'
-foo: |
-    one
-    two
-
-bar: |
-    one
-    two
-
-
-EOF;
-        $expected = array(
-            'foo' => "one\ntwo\n",
-            'bar' => "one\ntwo\n",
-        );
-        $tests['Literal block chomping clip with multiple trailing newlines'] = array($expected, $yaml);
+        $tests['Literal block chomping clip with trailing newline'] = array($expected, $yaml);
 
         $yaml = <<<'EOF'
 foo: |
@@ -197,7 +165,7 @@ bar: |
 EOF;
         $expected = array(
             'foo' => "one\ntwo\n",
-            'bar' => "one\ntwo",
+            'bar' => "one\ntwo\n",
         );
         $tests['Literal block chomping clip without trailing newline'] = array($expected, $yaml);
 
@@ -205,33 +173,17 @@ EOF;
 foo: |+
     one
     two
-bar: |+
-    one
-    two
-
-EOF;
-        $expected = array(
-            'foo' => "one\ntwo\n",
-            'bar' => "one\ntwo\n",
-        );
-        $tests['Literal block chomping keep with single trailing newline'] = array($expected, $yaml);
-
-        $yaml = <<<'EOF'
-foo: |+
-    one
-    two
 
 bar: |+
     one
     two
-
 
 EOF;
         $expected = array(
             'foo' => "one\ntwo\n\n",
             'bar' => "one\ntwo\n\n",
         );
-        $tests['Literal block chomping keep with multiple trailing newlines'] = array($expected, $yaml);
+        $tests['Literal block chomping keep with trailing newline'] = array($expected, $yaml);
 
         $yaml = <<<'EOF'
 foo: |+
@@ -243,7 +195,7 @@ bar: |+
 EOF;
         $expected = array(
             'foo' => "one\ntwo\n",
-            'bar' => "one\ntwo",
+            'bar' => "one\ntwo\n",
         );
         $tests['Literal block chomping keep without trailing newline'] = array($expected, $yaml);
 
@@ -251,6 +203,7 @@ EOF;
 foo: >-
     one
     two
+
 bar: >-
     one
     two
@@ -260,24 +213,7 @@ EOF;
             'foo' => "one two",
             'bar' => "one two",
         );
-        $tests['Folded block chomping strip with single trailing newline'] = array($expected, $yaml);
-
-        $yaml = <<<'EOF'
-foo: >-
-    one
-    two
-
-bar: >-
-    one
-    two
-
-
-EOF;
-        $expected = array(
-            'foo' => "one two",
-            'bar' => "one two",
-        );
-        $tests['Folded block chomping strip with multiple trailing newlines'] = array($expected, $yaml);
+        $tests['Folded block chomping strip with trailing newline'] = array($expected, $yaml);
 
         $yaml = <<<'EOF'
 foo: >-
@@ -297,6 +233,7 @@ EOF;
 foo: >
     one
     two
+
 bar: >
     one
     two
@@ -306,24 +243,7 @@ EOF;
             'foo' => "one two\n",
             'bar' => "one two\n",
         );
-        $tests['Folded block chomping clip with single trailing newline'] = array($expected, $yaml);
-
-        $yaml = <<<'EOF'
-foo: >
-    one
-    two
-
-bar: >
-    one
-    two
-
-
-EOF;
-        $expected = array(
-            'foo' => "one two\n",
-            'bar' => "one two\n",
-        );
-        $tests['Folded block chomping clip with multiple trailing newlines'] = array($expected, $yaml);
+        $tests['Folded block chomping clip with trailing newline'] = array($expected, $yaml);
 
         $yaml = <<<'EOF'
 foo: >
@@ -335,7 +255,7 @@ bar: >
 EOF;
         $expected = array(
             'foo' => "one two\n",
-            'bar' => "one two",
+            'bar' => "one two\n",
         );
         $tests['Folded block chomping clip without trailing newline'] = array($expected, $yaml);
 
@@ -343,33 +263,17 @@ EOF;
 foo: >+
     one
     two
-bar: >+
-    one
-    two
-
-EOF;
-        $expected = array(
-            'foo' => "one two\n",
-            'bar' => "one two\n",
-        );
-        $tests['Folded block chomping keep with single trailing newline'] = array($expected, $yaml);
-
-        $yaml = <<<'EOF'
-foo: >+
-    one
-    two
 
 bar: >+
     one
     two
-
 
 EOF;
         $expected = array(
             'foo' => "one two\n\n",
             'bar' => "one two\n\n",
         );
-        $tests['Folded block chomping keep with multiple trailing newlines'] = array($expected, $yaml);
+        $tests['Folded block chomping keep with trailing newline'] = array($expected, $yaml);
 
         $yaml = <<<'EOF'
 foo: >+
@@ -381,7 +285,7 @@ bar: >+
 EOF;
         $expected = array(
             'foo' => "one two\n",
-            'bar' => "one two",
+            'bar' => "one two\n",
         );
         $tests['Folded block chomping keep without trailing newline'] = array($expected, $yaml);
 
@@ -450,7 +354,7 @@ EOF;
 
     /**
      *
-     * @expectedException \Symfony\Component\Yaml\Exception\ParseException
+     * @expectedException Symfony\Component\Yaml\Exception\ParseException
      *
      */
     public function testUnindentedCollectionException()
@@ -468,7 +372,7 @@ EOF;
     }
 
     /**
-     * @expectedException \Symfony\Component\Yaml\Exception\ParseException
+     * @expectedException Symfony\Component\Yaml\Exception\ParseException
      */
     public function testSequenceInAMapping()
     {
@@ -481,7 +385,7 @@ EOF
     }
 
     /**
-     * @expectedException \Symfony\Component\Yaml\Exception\ParseException
+     * @expectedException Symfony\Component\Yaml\Exception\ParseException
      */
     public function testMappingInASequence()
     {

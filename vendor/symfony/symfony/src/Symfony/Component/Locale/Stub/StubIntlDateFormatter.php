@@ -13,6 +13,7 @@ namespace Symfony\Component\Locale\Stub;
 
 use Symfony\Component\Locale\Stub\StubLocale;
 use Symfony\Component\Locale\Stub\DateFormat\FullTransformer;
+use Symfony\Component\Locale\Exception\NotImplementedException;
 use Symfony\Component\Locale\Exception\MethodNotImplementedException;
 use Symfony\Component\Locale\Exception\MethodArgumentNotImplementedException;
 use Symfony\Component\Locale\Exception\MethodArgumentValueNotImplementedException;
@@ -90,7 +91,7 @@ class StubIntlDateFormatter
     private $pattern;
 
     /**
-     * @var \DateTimeZone
+     * @var DateTimeZone
      */
     private $dateTimeZone;
 
@@ -149,8 +150,6 @@ class StubIntlDateFormatter
      *                           One of the calendar constants.
      * @param string $pattern Optional pattern to use when formatting
      *
-     * @return StubIntlDateFormatter
-     *
      * @see    http://www.php.net/manual/en/intldateformatter.create.php
      * @see    http://userguide.icu-project.org/formatparse/datetime
      *
@@ -170,7 +169,7 @@ class StubIntlDateFormatter
      *
      * @see    http://www.php.net/manual/en/intldateformatter.format.php
      *
-     * @throws MethodArgumentValueNotImplementedException If one of the formatting characters is not implemented
+     * @throws NotImplementedException    If one of the formatting characters is not implemented
      */
     public function format($timestamp)
     {
@@ -374,7 +373,7 @@ class StubIntlDateFormatter
     /**
      * Returns whether the formatter is lenient
      *
-     * @return Boolean
+     * @return string   The timezone identifier used by the formatter
      *
      * @see    http://www.php.net/manual/en/intldateformatter.islenient.php
      *
@@ -382,7 +381,7 @@ class StubIntlDateFormatter
      */
     public function isLenient()
     {
-        return false;
+        throw new MethodNotImplementedException(__METHOD__);
     }
 
     /**

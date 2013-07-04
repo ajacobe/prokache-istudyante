@@ -161,14 +161,14 @@ class DateTimeToStringTransformer extends BaseDateTimeTransformer
                 // Check which of the date parts are present in the pattern
                 preg_match(
                     '/(' .
-                    '(?P<day>[djDl])|' .
-                    '(?P<month>[FMmn])|' .
-                    '(?P<year>[Yy])|' .
-                    '(?P<hour>[ghGH])|' .
-                    '(?P<minute>i)|' .
-                    '(?P<second>s)|' .
-                    '(?P<dayofyear>z)|' .
-                    '(?P<timestamp>U)|' .
+                    '(?<day>[djDl])|' .
+                    '(?<month>[FMmn])|' .
+                    '(?<year>[Yy])|' .
+                    '(?<hour>[ghGH])|' .
+                    '(?<minute>i)|' .
+                    '(?<second>s)|' .
+                    '(?<dayofyear>z)|' .
+                    '(?<timestamp>U)|' .
                     '[^djDlFMmnYyghGHiszU]' .
                     ')*/',
                     $this->parseFormat,

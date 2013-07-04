@@ -1,11 +1,11 @@
 parameters:
     database_driver:   pdo_mysql
     database_host:     localhost
-    database_port:     ~
+    database_port:     8889
     database_name:     istudyante_dev
     
     database_user:     root
-    database_password: localhost
+    database_password: root
 
     mailer_transport:  smtp
     mailer_host:       127.0.0.1

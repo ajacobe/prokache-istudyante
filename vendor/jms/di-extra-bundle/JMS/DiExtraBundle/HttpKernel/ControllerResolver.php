@@ -65,18 +65,6 @@ class ControllerResolver extends BaseControllerResolver
             throw new \InvalidArgumentException(sprintf('Class "%s" does not exist.', $class));
         }
 
-        $injector = $this->createInjector($class);
-        $controller = call_user_func($injector, $this->container);
-
-        if ($controller instanceof ContainerAwareInterface) {
-            $controller->setContainer($this->container);
-        }
-
-        return array($controller, $method);
-    }
-
-    public function createInjector($class)
-    {
         $filename = $this->container->getParameter('jms_di_extra.cache_dir').'/controller_injectors/'.str_replace('\\', '', $class).'.php';
         $cache = new ConfigCache($filename, $this->container->getParameter('kernel.debug'));
 
@@ -87,25 +75,20 @@ class ControllerResolver extends BaseControllerResolver
                 $metadata->addClassMetadata(new ClassMetadata($class));
             }
 
-            // If the cache warmer tries to warm up a service controller that uses
-            // annotations, we need to bail out as this is handled by the service
-            // container directly.
-            if (null !== $metadata->getOutsideClassMetadata()->id
-                    && 0 !== strpos($metadata->getOutsideClassMetadata()->id, '_jms_di_extra.unnamed.service')) {
-                return;
-            }
-
-            $this->prepareContainer($cache, $filename, $metadata, $class);
+            $this->prepareContainer($cache, $filename, $metadata);
         }
 
-        if ( ! class_exists($class.'__JMSInjector', false)) {
-            require $filename;
+        $inject = require $filename;
+        $controller = $inject($this->container);
+
+        if ($controller instanceof ContainerAwareInterface) {
+            $controller->setContainer($this->container);
         }
 
-        return array($class.'__JMSInjector', 'inject');
+        return array($controller, $method);
     }
 
-    private function prepareContainer($cache, $containerFilename, $metadata, $className)
+    private function prepareContainer($cache, $containerFilename, $metadata)
     {
         $container = new ContainerBuilder();
         $container->setParameter('jms_aop.cache_dir', $this->container->getParameter('jms_di_extra.cache_dir'));
@@ -154,7 +137,7 @@ class ControllerResolver extends BaseControllerResolver
             $generator = new DefinitionInjectorGenerator();
         }
 
-        $cache->write($generator->generate($container->getDefinition('controller'), $className), $container->getResources());
+        $cache->write($generator->generate($container->getDefinition('controller')), $container->getResources());
     }
 
     private function generateLookupMethods($def, $metadata)

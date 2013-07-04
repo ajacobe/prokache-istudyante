@@ -1,17 +1,9 @@
 <?php
 namespace Istudyante\UserBundle\Services;
 
-use Istudyante\AdminBundle\Event\AdminBundleEvents;
-
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
-use ChromediaUtilities\Helpers\SecurityHelper;
-use ChromediaUtilities\Helpers\Inflector;
-
-use Istudyante\UserBundle\Entity\AdminUserRole;
-use Istudyante\UserBundle\Entity\SiteUser;
 use Istudyante\UserBundle\Services\Exception\InvalidInstitutionUserOperationException;
-use Istudyante\UserBundle\Entity\AdminUser;
 
 class AdminUserService extends UserService
 {

@@ -14,7 +14,7 @@ namespace Symfony\Component\Security\Http\Firewall;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Http\EntryPoint\DigestAuthenticationEntryPoint;
-use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpKernel\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
@@ -54,8 +54,6 @@ class DigestAuthenticationListener implements ListenerInterface
      * Handles digest authentication.
      *
      * @param GetResponseEvent $event A GetResponseEvent instance
-     *
-     * @throws AuthenticationServiceException
      */
     public function handle(GetResponseEvent $event)
     {

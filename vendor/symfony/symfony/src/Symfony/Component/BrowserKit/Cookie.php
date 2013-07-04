@@ -118,8 +118,6 @@ class Cookie
      *
      * @return Cookie A Cookie instance
      *
-     * @throws \InvalidArgumentException
-     *
      * @api
      */
     public static function fromString($cookie, $url = null)

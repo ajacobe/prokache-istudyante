@@ -750,10 +750,7 @@ class SqlWalker implements TreeWalker
         $sqlParts = array();
 
         foreach ($identificationVarDecls as $identificationVariableDecl) {
-            $sql = $this->platform->appendLockHint(
-                $this->walkRangeVariableDeclaration($identificationVariableDecl->rangeVariableDeclaration),
-                $this->query->getHint(Query::HINT_LOCK_MODE)
-            );
+            $sql = $this->walkRangeVariableDeclaration($identificationVariableDecl->rangeVariableDeclaration);
 
             foreach ($identificationVariableDecl->joins as $join) {
                 $sql .= $this->walkJoin($join);
@@ -773,7 +770,7 @@ class SqlWalker implements TreeWalker
                 }
             }
 
-            $sqlParts[] = $sql;
+            $sqlParts[] = $this->platform->appendLockHint($sql, $this->query->getHint(Query::HINT_LOCK_MODE));
         }
 
         return ' FROM ' . implode(', ', $sqlParts);
@@ -1370,16 +1367,13 @@ class SqlWalker implements TreeWalker
         $sqlParts = array ();
 
         foreach ($identificationVarDecls as $subselectIdVarDecl) {
-            $sql = $this->platform->appendLockHint(
-                $this->walkRangeVariableDeclaration($subselectIdVarDecl->rangeVariableDeclaration),
-                $this->query->getHint(Query::HINT_LOCK_MODE)
-            );
+            $sql = $this->walkRangeVariableDeclaration($subselectIdVarDecl->rangeVariableDeclaration);
 
             foreach ($subselectIdVarDecl->joins as $join) {
                 $sql .= $this->walkJoin($join);
             }
 
-            $sqlParts[] = $sql;
+            $sqlParts[] = $this->platform->appendLockHint($sql, $this->query->getHint(Query::HINT_LOCK_MODE));
         }
 
         return ' FROM ' . implode(', ', $sqlParts);

@@ -32,26 +32,26 @@ interface RunAsManagerInterface
      *
      * The returned Token must have a complementing AuthenticationProvider implementation.
      *
-     * @param  TokenInterface $token        the original Token
-     * @param  object         $secureObject the secure object which caused this call
-     * @param  array          $attributes   an array of attributes to apply to the built token
+     * @param TokenInterface $token the original Token
+     * @param object $secureObject the secure object which caused this call
+     * @param array $attributes an array of attributes to apply to the built token
      * @return TokenInterface
      */
-    public function buildRunAs(TokenInterface $token, $secureObject, array $attributes);
+    function buildRunAs(TokenInterface $token, $secureObject, array $attributes);
 
     /**
      * Whether this RunAsManager supports the given attribute
      *
-     * @param  string  $attribute
+     * @param string $attribute
      * @return Boolean
      */
-    public function supportsAttribute($attribute);
+    function supportsAttribute($attribute);
 
     /**
      * Whether this RunAsManager supports the given class.
      *
-     * @param  string  $className The class of the secure object which requests RunAs capabilities
+     * @param string $className The class of the secure object which requests RunAs capabilities
      * @return Boolean
      */
-    public function supportsClass($className);
+    function supportsClass($className);
 }

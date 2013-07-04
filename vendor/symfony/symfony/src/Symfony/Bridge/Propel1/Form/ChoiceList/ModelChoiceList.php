@@ -18,10 +18,9 @@ use \Persistent;
 use Symfony\Component\Form\Exception\FormException;
 use Symfony\Component\Form\Exception\StringCastException;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ObjectChoiceList;
-use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
- * Widely inspired by the EntityChoiceList.
+ * Widely inspirated by the EntityChoiceList.
  *
  * @author William Durand <william.durand1@gmail.com>
  * @author Toni Uebernickel <tuebernickel@gmail.com>
@@ -59,28 +58,20 @@ class ModelChoiceList extends ObjectChoiceList
     protected $loaded = false;
 
     /**
-     * Whether to use the identifier for index generation
-     *
-     * @var Boolean
-     */
-    private $identifierAsIndex = false;
-
-    /**
      * Constructor.
      *
      * @see Symfony\Bridge\Propel1\Form\Type\ModelType How to use the preferred choices.
      *
-     * @param string                   $class             The FQCN of the model class to be loaded.
-     * @param string                   $labelPath         A property path pointing to the property used for the choice labels.
-     * @param array                    $choices           An optional array to use, rather than fetching the models.
-     * @param ModelCriteria            $queryObject       The query to use retrieving model data from database.
-     * @param string                   $groupPath         A property path pointing to the property used to group the choices.
-     * @param array|ModelCriteria      $preferred         The preferred items of this choice.
-     *                                                    Either an array if $choices is given,
-     *                                                    or a ModelCriteria to be merged with the $queryObject.
-     * @param PropertyAccessorInterface $propertyAccessor The reflection graph for reading property paths.
+     * @param string              $class       The FQCN of the model class to be loaded.
+     * @param string              $labelPath   A property path pointing to the property used for the choice labels.
+     * @param array               $choices     An optional array to use, rather than fetching the models.
+     * @param ModelCriteria       $queryObject The query to use retrieving model data from database.
+     * @param string              $groupPath   A property path pointing to the property used to group the choices.
+     * @param array|ModelCriteria $preferred   The preferred items of this choice.
+     *                                         Either an array if $choices is given,
+     *                                         or a ModelCriteria to be merged with the $queryObject.
      */
-    public function __construct($class, $labelPath = null, $choices = null, $queryObject = null, $groupPath = null, $preferred = array(), PropertyAccessorInterface $propertyAccessor = null)
+    public function __construct($class, $labelPath = null, $choices = null, $queryObject = null, $groupPath = null, $preferred = array())
     {
         $this->class        = $class;
 
@@ -102,11 +93,7 @@ class ModelChoiceList extends ObjectChoiceList
             $preferred = array();
         }
 
-        if (1 === count($this->identifier) && $this->isInteger(current($this->identifier))) {
-            $this->identifierAsIndex = true;
-        }
-
-        parent::__construct($choices, $labelPath, $preferred, $groupPath, null, $propertyAccessor);
+        parent::__construct($choices, $labelPath, $preferred, $groupPath);
     }
 
     /**
@@ -261,7 +248,7 @@ class ModelChoiceList extends ObjectChoiceList
             // know that the IDs are used as indices
 
             // Attention: This optimization does not check choices for existence
-            if ($this->identifierAsIndex) {
+            if (1 === count($this->identifier)) {
                 $indices = array();
 
                 foreach ($models as $model) {
@@ -296,7 +283,7 @@ class ModelChoiceList extends ObjectChoiceList
             // know that the IDs are used as indices and values
 
             // Attention: This optimization does not check values for existence
-            if ($this->identifierAsIndex) {
+            if (1 === count($this->identifier)) {
                 return $this->fixIndices($values);
             }
 
@@ -320,7 +307,7 @@ class ModelChoiceList extends ObjectChoiceList
      */
     protected function createIndex($model)
     {
-        if ($this->identifierAsIndex) {
+        if (1 === count($this->identifier)) {
             return current($this->getIdentifierValues($model));
         }
 
@@ -377,10 +364,7 @@ class ModelChoiceList extends ObjectChoiceList
      * exception is thrown.
      *
      * @param object $model The model for which to get the identifier
-     *
-     * @return array
-     *
-     * @throws FormException If the model does not exist
+     * @throws FormException   If the model does not exist
      */
     private function getIdentifierValues($model)
     {
@@ -394,17 +378,5 @@ class ModelChoiceList extends ObjectChoiceList
         }
 
         return $model->getPrimaryKeys();
-    }
-
-    /**
-     * Whether this column in an integer
-     *
-     * @param \ColumnMap $column
-     *
-     * @return Boolean
-     */
-    private function isInteger(\ColumnMap $column)
-    {
-        return $column->getPdoType() === \PDO::PARAM_INT;
     }
 }

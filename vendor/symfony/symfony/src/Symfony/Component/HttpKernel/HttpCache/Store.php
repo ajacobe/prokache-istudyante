@@ -71,13 +71,7 @@ class Store implements StoreInterface
      */
     public function lock(Request $request)
     {
-        $path = $this->getPath($this->getCacheKey($request).'.lck');
-        if (!is_dir(dirname($path)) && false === @mkdir(dirname($path), 0777, true)) {
-            return false;
-        }
-
-        $lock = @fopen($path, 'x');
-        if (false !== $lock) {
+        if (false !== $lock = @fopen($path = $this->getPath($this->getCacheKey($request).'.lck'), 'x')) {
             fclose($lock);
 
             $this->locks[] = $path;
@@ -85,7 +79,7 @@ class Store implements StoreInterface
             return true;
         }
 
-        return !file_exists($path) ?: $path;
+        return $path;
     }
 
     /**
@@ -100,11 +94,6 @@ class Store implements StoreInterface
         $file = $this->getPath($this->getCacheKey($request).'.lck');
 
         return is_file($file) ? @unlink($file) : false;
-    }
-
-    public function isLocked(Request $request)
-    {
-        return is_file($this->getPath($this->getCacheKey($request).'.lck'));
     }
 
     /**
@@ -157,8 +146,6 @@ class Store implements StoreInterface
      * @param Response $response A Response instance
      *
      * @return string The key under which the response is stored
-     *
-     * @throws \RuntimeException
      */
     public function write(Request $request, Response $response)
     {
@@ -221,8 +208,6 @@ class Store implements StoreInterface
      * Invalidates all cache entries that match the request.
      *
      * @param Request $request A Request instance
-     *
-     * @throws \RuntimeException
      */
     public function invalidate(Request $request)
     {
@@ -250,7 +235,7 @@ class Store implements StoreInterface
         // As per the RFC, invalidate Location and Content-Location URLs if present
         foreach (array('Location', 'Content-Location') as $header) {
             if ($uri = $request->headers->get($header)) {
-                $subRequest = $request::create($uri, 'get', array(), array(), array(), $request->server->all());
+                $subRequest = Request::create($uri, 'get', array(), array(), array(), $request->server->all());
 
                 $this->invalidate($subRequest);
             }
@@ -340,8 +325,6 @@ class Store implements StoreInterface
      *
      * @param string $key  The store key
      * @param string $data The data to store
-     *
-     * @return Boolean
      */
     private function save($key, $data)
     {
@@ -421,8 +404,6 @@ class Store implements StoreInterface
      *
      * @param array  $headers An array of HTTP headers for the Response
      * @param string $body    The Response body
-     *
-     * @return Response
      */
     private function restoreResponse($headers, $body = null)
     {

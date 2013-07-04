@@ -11,8 +11,6 @@
 
 namespace Symfony\Component\Process;
 
-use Symfony\Component\Process\Exception\RuntimeException;
-
 /**
  * PhpProcess runs a PHP script in an independent process.
  *
@@ -63,7 +61,7 @@ class PhpProcess extends Process
     {
         if (null === $this->getCommandLine()) {
             if (false === $php = $this->executableFinder->find()) {
-                throw new RuntimeException('Unable to find the PHP executable.');
+                throw new \RuntimeException('Unable to find the PHP executable.');
             }
             $this->setCommandLine($php);
         }

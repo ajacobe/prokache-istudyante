@@ -30,10 +30,10 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
  */
 class Request
 {
-    const HEADER_CLIENT_IP    = 'client_ip';
-    const HEADER_CLIENT_HOST  = 'client_host';
+    const HEADER_CLIENT_IP = 'client_ip';
+    const HEADER_CLIENT_HOST = 'client_host';
     const HEADER_CLIENT_PROTO = 'client_proto';
-    const HEADER_CLIENT_PORT  = 'client_port';
+    const HEADER_CLIENT_PORT = 'client_port';
 
     protected static $trustProxy = false;
 
@@ -52,8 +52,6 @@ class Request
         self::HEADER_CLIENT_PROTO => 'X_FORWARDED_PROTO',
         self::HEADER_CLIENT_PORT  => 'X_FORWARDED_PORT',
     );
-
-    protected static $httpMethodParameterOverride = false;
 
     /**
      * @var \Symfony\Component\HttpFoundation\ParameterBag
@@ -253,9 +251,6 @@ class Request
     /**
      * Creates a Request based on a given URI and configuration.
      *
-     * The information contained in the URI always take precedence
-     * over the other information (server and parameters).
-     *
      * @param string $uri        The URI
      * @param string $method     The HTTP method
      * @param array  $parameters The query (GET) or request (POST) parameters
@@ -270,7 +265,7 @@ class Request
      */
     public static function create($uri, $method = 'GET', $parameters = array(), $cookies = array(), $files = array(), $server = array(), $content = null)
     {
-        $server = array_replace(array(
+        $defaults = array(
             'SERVER_NAME'          => 'localhost',
             'SERVER_PORT'          => 80,
             'HTTP_HOST'            => 'localhost',
@@ -283,38 +278,32 @@ class Request
             'SCRIPT_FILENAME'      => '',
             'SERVER_PROTOCOL'      => 'HTTP/1.1',
             'REQUEST_TIME'         => time(),
-        ), $server);
-
-        $server['PATH_INFO'] = '';
-        $server['REQUEST_METHOD'] = strtoupper($method);
+        );
 
         $components = parse_url($uri);
         if (isset($components['host'])) {
-            $server['SERVER_NAME'] = $components['host'];
-            $server['HTTP_HOST'] = $components['host'];
+            $defaults['SERVER_NAME'] = $components['host'];
+            $defaults['HTTP_HOST'] = $components['host'];
         }
 
         if (isset($components['scheme'])) {
             if ('https' === $components['scheme']) {
-                $server['HTTPS'] = 'on';
-                $server['SERVER_PORT'] = 443;
-            } else {
-                unset($server['HTTPS']);
-                $server['SERVER_PORT'] = 80;
+                $defaults['HTTPS'] = 'on';
+                $defaults['SERVER_PORT'] = 443;
             }
         }
 
         if (isset($components['port'])) {
-            $server['SERVER_PORT'] = $components['port'];
-            $server['HTTP_HOST'] = $server['HTTP_HOST'].':'.$components['port'];
+            $defaults['SERVER_PORT'] = $components['port'];
+            $defaults['HTTP_HOST'] = $defaults['HTTP_HOST'].':'.$components['port'];
         }
 
         if (isset($components['user'])) {
-            $server['PHP_AUTH_USER'] = $components['user'];
+            $defaults['PHP_AUTH_USER'] = $components['user'];
         }
 
         if (isset($components['pass'])) {
-            $server['PHP_AUTH_PW'] = $components['pass'];
+            $defaults['PHP_AUTH_PW'] = $components['pass'];
         }
 
         if (!isset($components['path'])) {
@@ -325,9 +314,7 @@ class Request
             case 'POST':
             case 'PUT':
             case 'DELETE':
-                if (!isset($server['CONTENT_TYPE'])) {
-                    $server['CONTENT_TYPE'] = 'application/x-www-form-urlencoded';
-                }
+                $defaults['CONTENT_TYPE'] = 'application/x-www-form-urlencoded';
             case 'PATCH':
                 $request = $parameters;
                 $query = array();
@@ -344,8 +331,14 @@ class Request
         }
         $queryString = http_build_query($query, '', '&');
 
-        $server['REQUEST_URI'] = $components['path'].('' !== $queryString ? '?'.$queryString : '');
-        $server['QUERY_STRING'] = $queryString;
+        $uri = $components['path'].('' !== $queryString ? '?'.$queryString : '');
+
+        $server = array_replace($defaults, $server, array(
+            'REQUEST_METHOD' => strtoupper($method),
+            'PATH_INFO'      => '',
+            'REQUEST_URI'    => $uri,
+            'QUERY_STRING'   => $queryString,
+        ));
 
         return new static($query, $request, array(), $cookies, $files, $server, $content);
     }
@@ -471,8 +464,6 @@ class Request
      */
     public static function trustProxyData()
     {
-        trigger_error('trustProxyData() is deprecated since version 2.0 and will be removed in 2.3. Use setTrustedProxies() instead.', E_USER_DEPRECATED);
-
         self::$trustProxy = true;
     }
 
@@ -492,16 +483,6 @@ class Request
     }
 
     /**
-     * Gets the list of trusted proxies.
-     *
-     * @return array An array of trusted proxies.
-     */
-    public static function getTrustedProxies()
-    {
-        return self::$trustedProxies;
-    }
-
-    /**
      * Sets the name for trusted headers.
      *
      * The following header keys are supported:
@@ -515,8 +496,6 @@ class Request
      *
      * @param string $key   The header key
      * @param string $value The header name
-     *
-     * @throws \InvalidArgumentException
      */
     public static function setTrustedHeaderName($key, $value)
     {
@@ -532,8 +511,6 @@ class Request
      * false otherwise.
      *
      * @return boolean
-     *
-     * @deprecated Deprecated since version 2.2, to be removed in 2.3. Use getTrustedProxies instead.
      */
     public static function isProxyTrusted()
     {
@@ -581,29 +558,6 @@ class Request
         array_multisort($order, SORT_ASC, $parts);
 
         return implode('&', $parts);
-    }
-
-    /**
-     * Enables support for the _method request parameter to determine the intended HTTP method.
-     *
-     * Be warned that enabling this feature might lead to CSRF issues in your code.
-     * Check that you are using CSRF tokens when required.
-     *
-     * The HTTP method can only be overridden when the real HTTP method is POST.
-     */
-    public static function enableHttpMethodParameterOverride()
-    {
-        self::$httpMethodParameterOverride = true;
-    }
-
-    /**
-     * Checks whether support for the _method request parameter is enabled.
-     *
-     * @return Boolean True when the _method request parameter is enabled, false otherwise
-     */
-    public static function getHttpMethodParameterOverride()
-    {
-        return self::$httpMethodParameterOverride;
     }
 
     /**
@@ -703,6 +657,8 @@ class Request
      *
      * @see http://en.wikipedia.org/wiki/X-Forwarded-For
      *
+     * @deprecated The proxy argument is deprecated since version 2.0 and will be removed in 2.3. Use setTrustedProxies instead.
+     *
      * @api
      */
     public function getClientIp()
@@ -747,7 +703,7 @@ class Request
      *
      *  * http://localhost/mysite              returns an empty string
      *  * http://localhost/mysite/about        returns '/about'
-     *  * http://localhost/mysite/enco%20ded   returns '/enco%20ded'
+     *  * htpp://localhost/mysite/enco%20ded   returns '/enco%20ded'
      *  * http://localhost/mysite/about?var=1  returns '/about'
      *
      * @return string The raw path (i.e. not urldecoded)
@@ -941,7 +897,8 @@ class Request
      */
     public function getUri()
     {
-        if (null !== $qs = $this->getQueryString()) {
+        $qs = $this->getQueryString();
+        if (null !== $qs) {
             $qs = '?'.$qs;
         }
 
@@ -1060,49 +1017,24 @@ class Request
     }
 
     /**
-     * Gets the request "intended" method.
-     *
-     * If the X-HTTP-Method-Override header is set, and if the method is a POST,
-     * then it is used to determine the "real" intended HTTP method.
-     *
-     * The _method request parameter can also be used to determine the HTTP method,
-     * but only if enableHttpMethodParameterOverride() has been called.
+     * Gets the request method.
      *
      * The method is always an uppercased string.
      *
      * @return string The request method
      *
      * @api
-     *
-     * @see getRealMethod
      */
     public function getMethod()
     {
         if (null === $this->method) {
             $this->method = strtoupper($this->server->get('REQUEST_METHOD', 'GET'));
-
             if ('POST' === $this->method) {
-                if ($method = $this->headers->get('X-HTTP-METHOD-OVERRIDE')) {
-                    $this->method = strtoupper($method);
-                } elseif (self::$httpMethodParameterOverride) {
-                    $this->method = strtoupper($this->request->get('_method', $this->query->get('_method', 'POST')));
-                }
+                $this->method = strtoupper($this->headers->get('X-HTTP-METHOD-OVERRIDE', $this->request->get('_method', $this->query->get('_method', 'POST'))));
             }
         }
 
         return $this->method;
-    }
-
-    /**
-     * Gets the "real" request method.
-     *
-     * @return string The request method
-     *
-     * @see getMethod
-     */
-    public function getRealMethod()
-    {
-        return strtoupper($this->server->get('REQUEST_METHOD', 'GET'));
     }
 
     /**
@@ -1284,8 +1216,6 @@ class Request
      * @param Boolean $asResource If true, a resource will be returned
      *
      * @return string|resource The request body content or a resource to read the body stream.
-     *
-     * @throws \LogicException
      */
     public function getContent($asResource = false)
     {
@@ -1345,18 +1275,7 @@ class Request
             return $locales[0];
         }
 
-        $extendedPreferredLanguages = array();
-        foreach ($preferredLanguages as $language) {
-            $extendedPreferredLanguages[] = $language;
-            if (false !== $position = strpos($language, '_')) {
-                $superLanguage = substr($language, 0, $position);
-                if (!in_array($superLanguage, $preferredLanguages)) {
-                    $extendedPreferredLanguages[] = $superLanguage;
-                }
-            }
-        }
-
-        $preferredLanguages = array_values(array_intersect($extendedPreferredLanguages, $locales));
+        $preferredLanguages = array_values(array_intersect($preferredLanguages, $locales));
 
         return isset($preferredLanguages[0]) ? $preferredLanguages[0] : $locales[0];
     }
@@ -1374,9 +1293,9 @@ class Request
             return $this->languages;
         }
 
-        $languages = AcceptHeader::fromString($this->headers->get('Accept-Language'))->all();
+        $languages = $this->splitHttpAcceptHeader($this->headers->get('Accept-Language'));
         $this->languages = array();
-        foreach (array_keys($languages) as $lang) {
+        foreach ($languages as $lang => $q) {
             if (strstr($lang, '-')) {
                 $codes = explode('-', $lang);
                 if ($codes[0] == 'i') {
@@ -1416,7 +1335,7 @@ class Request
             return $this->charsets;
         }
 
-        return $this->charsets = array_keys(AcceptHeader::fromString($this->headers->get('Accept-Charset'))->all());
+        return $this->charsets = array_keys($this->splitHttpAcceptHeader($this->headers->get('Accept-Charset')));
     }
 
     /**
@@ -1432,7 +1351,7 @@ class Request
             return $this->acceptableContentTypes;
         }
 
-        return $this->acceptableContentTypes = array_keys(AcceptHeader::fromString($this->headers->get('Accept'))->all());
+        return $this->acceptableContentTypes = array_keys($this->splitHttpAcceptHeader($this->headers->get('Accept')));
     }
 
     /**
@@ -1457,23 +1376,40 @@ class Request
      * @param string $header Header to split
      *
      * @return array Array indexed by the values of the Accept-* header in preferred order
-     *
-     * @deprecated Deprecated since version 2.2, to be removed in 2.3.
      */
     public function splitHttpAcceptHeader($header)
     {
-        trigger_error('splitHttpAcceptHeader() is deprecated since version 2.2 and will be removed in 2.3.', E_USER_DEPRECATED);
-
-        $headers = array();
-        foreach (AcceptHeader::fromString($header)->all() as $item) {
-            $key = $item->getValue();
-            foreach ($item->getAttributes() as $name => $value) {
-                $key .= sprintf(';%s=%s', $name, $value);
-            }
-            $headers[$key] = $item->getQuality();
+        if (!$header) {
+            return array();
         }
 
-        return $headers;
+        $values = array();
+        $groups = array();
+        foreach (array_filter(explode(',', $header)) as $value) {
+            // Cut off any q-value that might come after a semi-colon
+            if (preg_match('/;\s*(q=.*$)/', $value, $match)) {
+                $q     = substr(trim($match[1]), 2);
+                $value = trim(substr($value, 0, -strlen($match[0])));
+            } else {
+                $q = 1;
+            }
+
+            $groups[$q][] = $value;
+        }
+
+        krsort($groups);
+
+        foreach ($groups as $q => $items) {
+            $q = (float) $q;
+
+            if (0 < $q) {
+                foreach ($items as $value) {
+                    $values[trim($value)] = $q;
+                }
+            }
+        }
+
+        return $values;
     }
 
     /*
