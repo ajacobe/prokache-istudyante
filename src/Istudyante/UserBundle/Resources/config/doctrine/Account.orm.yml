@@ -1,0 +1,50 @@
+Istudyante\UserBundle\Entity\Account:
+    type: entity
+    table: accounts
+    repositoryClass: Istudyante\UserBundle\Repository\AccountRepository
+    fields:
+        id:
+            id: true
+            type: bigint
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        firstName:
+            type: string
+            length: 250
+            fixed: false
+            nullable: false
+            column: first_name
+        lastName:
+            type: string
+            length: 250
+            fixed: false
+            nullable: false
+            column: last_name
+        middleName:
+            type: string
+            length: 250
+            fixed: false
+            nullable: false
+            column: middle_name
+        email:
+            type: string
+            length: 250
+            fixed: false
+            nullable: false
+        password:
+            type: string
+            length: 250
+            fixed: false
+            nullable: false
+        dateCreated:
+            type: datetime
+            nullable: false
+            column: date_created
+        dateModified:
+            type: datetime
+            nullable: false
+            column: date_modified
+        status:
+            type: integer
+            nullable: false

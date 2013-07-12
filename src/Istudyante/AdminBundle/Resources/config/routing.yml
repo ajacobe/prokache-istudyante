@@ -1,16 +1,11 @@
-admin_homepage:
-    pattern:  /hello/{name}
-    defaults: { _controller: AdminBundle:Default:index }
-    
 admin_login:
-    pattern:  /admin/login
-    defaults: { _controller: AdminBundle:AdminUser:login }
+    pattern: /admin/login
+    defaults: { _controller: AdminBundle:Default:login }
     requirements:
         _method:  GET|POST
 
 admin_login_check:
     pattern:   /admin/login-check
     
-admin_dashboard:
-    pattern:   /admin/dashboard
-    defaults: { _controller: AdminBundle:Default:index }
+admin_logout:
+    pattern:  /admin/logout

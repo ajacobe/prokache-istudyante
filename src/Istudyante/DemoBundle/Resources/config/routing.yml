@@ -1,3 +1,0 @@
-home_index:
-    pattern:  /hello/{name}
-    defaults: { _controller: DemoBundle:Welcome:index }

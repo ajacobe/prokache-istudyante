@@ -1,23 +1,13 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title>{% block title %}Istudyante{% endblock %}</title>
-
-        {% javascripts
-            'js/bootstrap.min.js'
-            output='js/compiled-admin.js'
-        %}
-<script src="http://istudyante.local:8888/app_dev.php/js/compiled-admin.js"></script>
-        {% endjavascripts %}
-            {% stylesheets 
-                'css/bootstrap.min.css'
-                'css/bootstrap-responsive.min.css'
-                output='css/compiled-admin.css'
-            %}
-            {% endstylesheets %}
-            <link href="http://istudyante.local:8888/app_dev.php/css/compiled-admin.css" rel="stylesheet"/>
-            
+        <meta charset="UTF-8" />
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        {% block stylesheets %}{% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
-    {% block body %}{% endblock %}
+    <body>
+        {% block body %}{% endblock %}
+        {% block javascripts %}{% endblock %}
+    </body>
 </html>

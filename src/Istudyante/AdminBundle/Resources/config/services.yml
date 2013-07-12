@@ -1,7 +1,13 @@
 parameters:
-#    admin.example.class: Istudyante\AdminBundle\Example
-
+    services.admin_user_provider_class: Istudyante\AdminBundle\Services\AdminUserProvider
+    services.user_provider_class: Istudyante\AdminBundle\Services\AccountsUserProvider
+    
 services:
-#    admin.example:
-#        class: %admin.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    services.admin_user_provider:
+        class: %services.admin_user_provider_class%
+        arguments: [@doctrine]
+        
+    services.user_provider:
+        class: %services.user_provider_class%
+        abstract: true
+        arguments: [@service_container,@doctrine]
